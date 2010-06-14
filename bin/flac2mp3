@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+require File.join(File.dirname(__FILE__), "..", "lib", "etree")
+require "fileutils"
+require "escape"
+
+dir = ARGV[0].to_s.sub(/\/$/, '')
+info_file = Etree::InfoFile.new :directory => dir
+info_file.parse
+
+# If we are in test mode, just print what we would do
+test_mode = false
+
+puts "Band: #{info_file.band}"
+puts "Date: #{info_file.date.strftime("%Y-%m-%d")}"
+puts "Venue: #{info_file.venue}"
+puts ""
+
+out_dir = "#{info_file.directory}.mp3f"
+
+Dir.mkdir(out_dir) unless File.exist?(out_dir)
+
+total_track_count = info_file.tracks.size
+flac_files = Dir["#{info_file.directory}/*.flac"]
+
+unless total_track_count == flac_files.size
+  puts "ERROR: Based on the info file, there are #{total_track_count} tracks, but there are #{flac_files.size}"
+  exit 1
+end
+
+disc_count = info_file.discs.size
+prev_disc = nil
+track_count = 0
+flac_files.each_with_index do |flac_file, i|
+  track = info_file.tracks[i]
+  
+  if prev_disc == track.disc
+    track_count += 1
+  else
+    track_count = 1
+    prev_disc = track.disc
+  end
+  
+  flac_cmd = Escape.shell_command(["flac", "-c", "-d", "--totally-silent", flac_file])
+  lame_cmd = Escape.shell_command(["lame", 
+    "-b", "128", 
+    "-q", "7",
+    "--ta", info_file.band,
+    "--tl", "#{info_file.date.strftime("%Y-%m-%d")} #{info_file.venue}",
+    "--tt", track.name,
+    "--tc", info_file.source.join("\n"),
+    "--ty", info_file.date.year.to_s,
+    "--tn", "#{track.number}/#{track_count}",
+    "--tv", "TPOS=#{track.disc}/#{disc_count}",
+    "-", File.join(out_dir, "#{track.file_name}.mp3")])
+    
+  cmd = "#{flac_cmd} | #{lame_cmd}"
+    
+  if test_mode
+    puts cmd
+  else    
+    puts "Encoding #{track.name}..."
+    unless system(cmd)
+      raise "Error while trying to encode #{flac_file}:#{$?}"
+    end
+  end
+end

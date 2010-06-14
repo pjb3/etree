@@ -5,13 +5,15 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "etree"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Scripts for working with flac files posted to http://bt.etree.org}
+    gem.description = %Q{A port of the perl scripts found at http://etree-scripts.sourceforge.net}
     gem.email = "mail@paulbarry.com"
     gem.homepage = "http://github.com/pjb3/etree"
     gem.authors = ["Paul Barry"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency "chronic", "0.2.3"
+    gem.add_dependency "escape", "0.0.4"
+    gem.bindir             = 'bin'
+    gem.executables        = %w[flac2mp3 parse_info]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

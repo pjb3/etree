@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require File.join(File.dirname(__FILE__), "..", "lib", "etree")
+
+info_file = Etree::InfoFile.new :directory => ARGV[0]
+info_file.parse
+
+puts "Band: #{info_file.band}"
+puts "Date: #{info_file.date.strftime("%Y-%m-%d")}"
+puts "Venue: #{info_file.venue}"
+puts "Source: #{info_file.source}"
+
+prev_disc = nil
+info_file.tracks.each_with_index do |t, i|
+  unless prev_disc == t.disc
+    puts ""
+    prev_disc = t.disc
+  end
+  puts("%02d %s" % [(i+1), t.name])
+  #puts("%02d %s (%s)" % [(i+1), t.name, t.file_name])
+end

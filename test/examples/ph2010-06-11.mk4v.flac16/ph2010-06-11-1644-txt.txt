@@ -1,0 +1,43 @@
+Phish
+06/11/2010
+Bridgeview, Illinois  Toyota Park
+
+Source: Schoeps mk4v> KC5> M222> NT222> Oade m148> SD 722 (@24bit/96kHz)
+Location: FOB, DFC, NOS, 6' Stand, 60' from Stage 
+
+Transfer: SD 722> Samplitude SE 9.1.1(dither/resample)> CDWave> flac(16/44.1)
+Taped, Transferred & Seeded by: taylorc (06/12/2010)
+
+
+Set I
+t01 [09:21] Down with Disease
+t02 [10:02] Wolfman's Brother
+t03 [10:11] Possum
+t04 [05:15] Boogie On Reggae Woman
+t05 [13:22] Reba
+t06 [08:17] Jesus Just Left Chicago
+t07 [14:28] The Divided Sky
+t08 [04:34] Golgi Apparatus
+t09 [11:16] David Bowie
+
+Set II
+t10 [13:20] Light>
+t11 [09:37] Maze
+t12 [15:10] Ghost>
+t13 [10:43] Limb by Limb
+t14 [07:52] Prince Caspian>
+t15 [01:17] The Horse>
+t16 [05:15] Silent in the Morning
+t17 [11:14] Run Like an Antelope
+t18 [06:12] Show of Life
+t19 [02:52] crowd
+
+Encore
+t20 [04:13] Cavern
+t21 [07:53] Julius
+
+
+Notes:
+Show of Life, first time played
+Thanks to Jason Lonchar for the Schoeps tubes & Brian Porter for the Oade m148
+Set I [1:26:46] Set II [1:23:32] Encore [12:06]
