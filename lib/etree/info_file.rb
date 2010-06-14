@@ -114,9 +114,7 @@ module Etree
     end
     
     def parse_date(s)
-      if time = Chronic.parse(s.to_s.gsub(',','').gsub(/(?:mon|tue|wed|thu|fri|sat|sun)\w*/i,''))
-        Date.new(time.year, time.month, time.day)
-      end
+      Chronic.parse(s.to_s.gsub(',','').gsub(/(?:mon|tue|wed|thu|fri|sat|sun)\w*/i,''))
     end
     
     def parse_tracks(paragraph)

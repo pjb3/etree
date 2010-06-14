@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-require File.join(File.dirname(__FILE__), "..", "lib", "etree")
-require "fileutils"
+require "rubygems"
+require "etree"
 require "escape"
 
 dir = ARGV[0].to_s.sub(/\/$/, '')

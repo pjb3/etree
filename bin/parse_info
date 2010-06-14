@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-require File.join(File.dirname(__FILE__), "..", "lib", "etree")
+require "rubygems"
+require "etree"
 
 info_file = Etree::InfoFile.new :directory => ARGV[0]
 info_file.parse

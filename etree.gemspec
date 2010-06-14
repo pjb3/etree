@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{etree}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Barry"]
@@ -20,10 +20,19 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "Gemfile",
      "LICENSE",
+     "README.md",
      "Rakefile",
      "VERSION",
+     "bin/flac2mp3",
+     "bin/parse_info",
+     "etree.gemspec",
      "lib/etree.rb",
+     "lib/etree/info_file.rb",
+     "lib/etree/track.rb",
+     "test/examples/moe2010-05-30early.skm140.flac16/moe2010-05-30early.txt",
+     "test/examples/ph2010-06-11.mk4v.flac16/ph2010-06-11-1644-txt.txt",
      "test/helper.rb",
      "test/test_etree.rb"
   ]
