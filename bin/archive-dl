@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "nokogiri"
+require "open-uri"
+
+doc = Nokogiri::HTML(open(ARGV[0]))
+
+doc.css('a').each do |link|
+  if link["href"].match /\.flac$/
+    puts File.join(ARGV[0], link["href"])
+  end
+end
