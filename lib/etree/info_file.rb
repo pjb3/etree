@@ -1,7 +1,7 @@
 require "chronic"
 
 module Etree
-  
+
   # This will parse the info file that comes with a show
   # Typical usage might look like:
   #   info_file = Etree::InfoFile.new :directory => "ph1999-12-31.flacf"
@@ -11,7 +11,7 @@ module Etree
   #   info_file.venue # => "Big Cypress Seminole Indian Reservation, Big Cypress, FL"
   #   info_file.discs.first # => ["Runaway Jim", "Funky Bitch", ...]
   class InfoFile
-    
+
     REGEXPS = {
       :spots      => %r{fob|dfc|btp|d?aud|d?sbd|soundboard|on(\s*|-)stage|matrix|mix|balcony|rail|stand}ix,
       :mics       => %r{caps|omni|cardioid|sc?ho?ep[sz]|neumann|mbho|akg|b&k|dpa|audio.technica}ix,
@@ -26,39 +26,39 @@ module Etree
       :states     => %r{A[BLKZR]|BC|CA|CO|CT|DE|FL|GA|HI|I[DLNA]|KS|KY|LA|M[ABEDINSOT]|N[BCDEFVHJMSY]|O[HKNR]|P[AQ]|PEI|QC|RI|S[CDK]|TN|TX|UT|VT|VA|W[AVIY]|DC}x,
       :countries  => %r{Japan|England|Ireland|Brazil|Jamaica|United\s+Kingdom|Italy|South\s+Africa|Sweden|Portugal|Israel|Egypt|Norway|France|India|Finland|United\s+States|China|Mexico|Costa\s+Rica|Ecuador|New\s+Zealand|Puerto\s+Rico|Djibouti}i
     }
-    
-    TRACK_REGEXP = %r{^\s*(?:d\d+)?t?(\d+)  # sometimes you see d<n>t<m>
+
+    TRACK_REGEXP = %r{^(?:d\d+)?t?(\d+)  # sometimes you see d<n>t<m>
                   \s* (?:[[:punct:]]+)?     # whitespace, some punctuation
                   \s* (.*)}mix;             # whitespace, the track title
-    
+
     attr_accessor :directory, :info_file, :band, :date, :venue, :source, :discs, :comments
-    
+
     def initialize(attrs={})
       attrs.each do |k,v|
         send("#{k}=", v)
       end
     end
-    
+
     def parse(info_file=nil)
       self.info_file = info_file if info_file
       parse_info
     end
-    
+
     def directory
       @directory ||= info_file ? File.dirname(info_file) : Dir.pwd
     end
-    
+
     def info_file
       # The implementation in the perl version is much more complicated
       # This should be good enough for now
       # Grab the first text file that doesn't have ffp in the name
       @info_file ||= Dir["#{directory}/*.txt"].detect{|f| File.basename(f) !~ /ffp/ }
     end
-    
+
     def songs_count
       Dir["#{directory}/*.flac"].size
     end
-    
+
     def tracks
       @tracks ||= begin
         tracks = []
@@ -70,12 +70,12 @@ module Etree
         tracks
       end
     end
-    
+
     private
     def info_file_paragraphs
       @info_file_paras ||= File.read(info_file).split(/\s*\r?\n\r?\n/)
     end
-    
+
     def parse_info
       info_file_paragraphs.each do |paragraph|
         next if $para =~ /\b[\da-f]{32}\b/i
@@ -92,18 +92,18 @@ module Etree
         end
       end
     end
-    
+
     def parse_band(paragraph)
       venue = []
       paragraph.each_line do |line|
         line.strip!
         next if line.empty?
-        
+
         if !date
           self.date = parse_date(line)
           next if date
         end
-        
+
         if band
           venue << line
         else
@@ -112,16 +112,16 @@ module Etree
       end
       self.venue = Array(venue).join(", ")
     end
-    
+
     def parse_date(s)
       Chronic.parse(s.to_s.gsub(',','').gsub(/(?:mon|tue|wed|thu|fri|sat|sun)\w*/i,''))
     end
-    
+
     def parse_tracks(paragraph)
       tracks = []
       paragraph.each_line do |line|
         line.strip!
-        
+
 
         if match = line.match(TRACK_REGEXP)
           tracks << format_track_name(match[2])
@@ -129,7 +129,7 @@ module Etree
       end
       (self.discs ||= []) << tracks unless tracks.empty?
     end
-    
+
     def format_track_name(track_name)
       track_name = track_name.to_s
       segue = track_name =~ />\s*$/
@@ -137,17 +137,17 @@ module Etree
       track_name.sub!(/[*^%>\s]*$/,"") # strip footnote markers
       track_name << (segue ? ' >' : '')
     end
-    
+
     def source_info_paragraph?(paragraph)
       paragraph =~ %r{^(?:source|src|xfer|transfer|seede[rd]|tape[rd]|recorded)\b}mix or
       paragraph =~ %r{\b(#{REGEXPS[:spots]}|#{REGEXPS[:mics]}|#{REGEXPS[:configs]}|#{REGEXPS[:cables]}|#{REGEXPS[:pres]}|#{REGEXPS[:dats]}|#{REGEXPS[:laptops]}|#{REGEXPS[:digicards]}|#{REGEXPS[:software]})\b}
     end
-    
+
     def tracks_paragraph?(paragraph)
       paragraph =~ /\b(cd|set|dis[ck]|volume|set)\b/i or
       paragraph =~ TRACK_REGEXP or
       paragraph =~ /^([\*\@\#\$\%\^]+)\s*[-=:]?\s*/
     end
-    
+
   end
 end

@@ -23,6 +23,9 @@ flac_files = Dir["#{info_file.directory}/*.flac"]
 
 unless total_track_count == flac_files.size
   puts "ERROR: Based on the info file, there are #{total_track_count} tracks, but there are #{flac_files.size}"
+  info_file.tracks.each do |track|
+    puts track
+  end
   exit 1
 end
 
