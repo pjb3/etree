@@ -1,5 +1,4 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
-gem "chronic", "0.2.3"
-gem "escape", "0.0.4"
-gem "jeweler"
+# Specify your gem's dependencies in etree.gemspec
+gemspec
